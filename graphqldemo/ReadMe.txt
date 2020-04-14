@@ -2,9 +2,6 @@
 mvnw spring-boot:run
 # Projekt rebuild
 mvnw clean package spring-boot:repackage
-# Plugin setup (for security)
-mvnw com.okta:okta-maven-plugin:setup
-
 ##################################################################
 # REST Services
 ##################################################################
