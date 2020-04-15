@@ -7,7 +7,7 @@ A simple insurance demo with GraphQL
 Build & run the demo application using Docker:
 
 ```bash
-docker -t graphqldemo .
+docker build -t graphqldemo .
 docker run -p 8080:8080 graphqldemo:latest
 ```
 
