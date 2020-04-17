@@ -16,11 +16,15 @@ After starting up the demo application the GraphQL GUI is available on [http://l
 ## Examples
 ### REST Services
 http://localhost:8080/users
+
 http://localhost:8080/policies
+
 http://localhost:8080/countries
 
 http://localhost:8080/user?id=1
+
 http://localhost:8080/saveUser?name=Gross
+
 http://localhost:8080/updateUser?id=1&name=Schöne
 
 ### GraphQL Queries
