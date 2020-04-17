@@ -19,13 +19,19 @@ http://localhost:8080/users
 
 http://localhost:8080/policies
 
-http://localhost:8080/countries
+http://localhost:8080/allCountries
 
 http://localhost:8080/user?id=1
 
 http://localhost:8080/saveUser?name=Gross
 
 http://localhost:8080/updateUser?id=1&name=Schöne
+
+http://localhost:8080/updatePolicy?id=1&name=Haftpflicht
+
+http://localhost:8080/deleteUser?id=1
+
+http://localhost:8080/deletePolicy?id=1
 
 ### GraphQL Queries
 
@@ -46,6 +52,8 @@ http://localhost:8080/updateUser?id=1&name=Schöne
 }
 
 { user(id: 1) { id, name, isMale } }
+
+{ policy(id: 1) { id, name } }
 
 mutation {
   saveUser(user: { name: "Schreiner" }) {
@@ -78,6 +86,13 @@ mutation {
 
 mutation {
   updateUser(id: 2, user: { name: "Gross" }) {
+    id
+    isMale
+  }
+}
+
+mutation {
+  updatePolicy(id: 2, policy: { name: "Unfall" }) {
     id
     isMale
   }
