@@ -1,13 +1,11 @@
 package com.nttdata.graphqldemo;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import io.leangen.graphql.annotations.GraphQLQuery;
 
 @Entity
+@Table(name = "policies")
 public class Policy {
 
     @Id @GeneratedValue

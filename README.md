@@ -1,37 +1,47 @@
 # GraphQLDemo
 
-A simple insurance demo with GraphQL
+Shows the functionality of GraphQL on the basis of distributed insurance data sources.
 
-## Build & Run
+## Run
 
-Build & run the demo application using Docker:
+### Build & Run
+
+Build & run the demo application using Docker Compose:
 
 ```bash
-docker build -t graphqldemo:latest .
-docker run -p 8080:8080 graphqldemo:latest
+docker-compose build
+docker-compose up -d
 ```
 
-After starting up the demo application the GraphQL GUI is available on [http://localhost:8080/gui](http://localhost:8080/gui).
+After starting up the demo application the GraphQL GUI is available on [http://localhost:8081/gui](http://localhost:8081/gui).
 
-## Examples
+### Stop Service
+
+```bash
+docker-compose down
+```
+
+## Showcase
+
 ### REST Services
-http://localhost:8080/users
 
-http://localhost:8080/policies
+[http://localhost:8081/users](http://localhost:8081/users)
 
-http://localhost:8080/allCountries
+[http://localhost:8081/policies](http://localhost:8081/policies)
 
-http://localhost:8080/user?id=1
+[http://localhost:8081/allCountries](http://localhost:8081/allCountries)
 
-http://localhost:8080/saveUser?name=Gross
+[http://localhost:8081/user?id=1](http://localhost:8081/user?id=1)
 
-http://localhost:8080/updateUser?id=1&name=Schöne
+[http://localhost:8081/saveUser?name=Gross](http://localhost:8081/saveUser?name=Gross)
 
-http://localhost:8080/updatePolicy?id=1&name=Haftpflicht
+[http://localhost:8081/updateUser?id=1&name=Schöne](http://localhost:8081/updateUser?id=1&name=Schöne)
 
-http://localhost:8080/deleteUser?id=1
+[http://localhost:8081/updatePolicy?id=1&name=Haftpflicht](http://localhost:8081/updatePolicy?id=1&name=Haftpflicht)
 
-http://localhost:8080/deletePolicy?id=1
+[http://localhost:8081/deleteUser?id=1](http://localhost:8081/deleteUser?id=1)
+
+[http://localhost:8081/deletePolicy?id=1](http://localhost:8081/deletePolicy?id=1)
 
 ### GraphQL Queries
 
@@ -99,5 +109,5 @@ mutation {
 }
 
 mutation {
-  deleteUser(id: 3) 
+  deleteUser(id: 3)
 }

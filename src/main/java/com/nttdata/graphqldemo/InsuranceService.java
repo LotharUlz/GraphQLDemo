@@ -43,7 +43,7 @@ public class InsuranceService {
 	}
 
 	@RequestMapping("/users")
-	public String getFoodsRequest() {
+	public String getUsersRequest() {
 		return this.getUsers().toString();
 	}
 
@@ -58,7 +58,7 @@ public class InsuranceService {
 	}
 	
 	@RequestMapping("/saveUser")
-	public String saveFoodRequest(@RequestParam(name = "name") String name) {
+	public String saveUserRequest(@RequestParam(name = "name") String name) {
 		User user = new User();
 		user.setName(name);
 		this.saveUser(user);
