@@ -21,7 +21,12 @@ services:
             POSTGRES_DB: partner
             POSTGRES_USER: dbUser
             POSTGRES_PASSWORD: secretDbPassword
-
+        volumes:
+            - type: bind
+              source: ./etc/users.sql
+              target: /docker-entrypoint-initdb.d/init_db.sql
+              read_only: true
+    
     policy_db:
         image: postgres:12.2-alpine
         ports:
@@ -30,4 +35,9 @@ services:
             POSTGRES_DB: policy
             POSTGRES_USER: dbUser
             POSTGRES_PASSWORD: secretDbPassword
-        
+        volumes:
+            - type: bind
+              source: ./etc/policies.sql
+              target: /docker-entrypoint-initdb.d/init_db.sql
+              read_only: true
+            

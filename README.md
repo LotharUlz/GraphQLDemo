@@ -54,7 +54,7 @@ docker-compose down
       id
       name
     }
-    policies {
+    userPolicies {
       id
       name
     }
@@ -88,7 +88,7 @@ mutation {
 }
 
 mutation {
-  savePolicy(policy: { name: "Hausrat"}, userId: 1) {
+  savePolicy(policy: { name: "Hausrat", userId: 1}) {
     id
     name
   }
@@ -104,7 +104,7 @@ mutation {
 mutation {
   updatePolicy(id: 2, policy: { name: "Unfall" }) {
     id
-    isMale
+    name
   }
 }
 
