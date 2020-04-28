@@ -1,13 +1,10 @@
-package com.nttdata.graphqldemo;
+package com.nttdata.graphqldemo.model.policy;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
+import javax.persistence.*;
 import io.leangen.graphql.annotations.GraphQLQuery;
 
 @Entity
+@Table(name = "policies", schema = "policy")
 public class Policy {
 
     @Id @GeneratedValue
@@ -17,9 +14,8 @@ public class Policy {
     @GraphQLQuery(name = "name", description = "An policy's name")
     private String name;
 
-    @ManyToOne
-    @GraphQLQuery(name = "user", description = "An policy's user")
-    private User user;
+    @GraphQLQuery(name = "userId", description = "An policy's name")
+    private long userId;
     
     public Long getId() {
         return id;
@@ -37,14 +33,14 @@ public class Policy {
         this.name = name;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
-    
+
     @Override
     public String toString() {
         return "User{" +

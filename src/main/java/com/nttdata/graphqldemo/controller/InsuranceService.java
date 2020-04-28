@@ -1,4 +1,4 @@
-package com.nttdata.graphqldemo;
+package com.nttdata.graphqldemo.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,12 @@ import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 
+import com.nttdata.graphqldemo.model.partner.*;
+import com.nttdata.graphqldemo.model.policy.*;
+import com.nttdata.graphqldemo.model.masterdata.*;
+import com.nttdata.graphqldemo.repository.partner.*;
+import com.nttdata.graphqldemo.repository.policy.*;
+
 @Service
 @GraphQLApi
 @RestController
@@ -36,14 +43,13 @@ public class InsuranceService {
 	// cache data from external webservice
 	private List<CountryCode> allCountries;
 
-	public InsuranceService(UserRepository foodRepository,
-			PolicyRepository ingredientRepository) {
+	public InsuranceService(UserRepository foodRepository, PolicyRepository ingredientRepository) {
 		this.userRepository = foodRepository;
 		this.policyRepository = ingredientRepository;
 	}
 
 	@RequestMapping("/users")
-	public String getFoodsRequest() {
+	public String getUsersRequest() {
 		return this.getUsers().toString();
 	}
 
@@ -58,7 +64,7 @@ public class InsuranceService {
 	}
 	
 	@RequestMapping("/saveUser")
-	public String saveFoodRequest(@RequestParam(name = "name") String name) {
+	public String saveUserRequest(@RequestParam(name = "name") String name) {
 		User user = new User();
 		user.setName(name);
 		this.saveUser(user);
@@ -93,40 +99,13 @@ public class InsuranceService {
 		return "Policy has been deleted. Id: " + id;
 	}
 	
-	@GraphQLQuery(name = "users")
-	public List<User> getUsers() {
-		return userRepository.findAll();
-	}
-
-	@GraphQLQuery(name = "policies")
-	public List<Policy> getPolicies() {
-		return policyRepository.findAll();
-	}
-	
-	@GraphQLQuery(name = "user")
-	public Optional<User> getUserById(@GraphQLArgument(name = "id") Long id) {
-		return userRepository.findById(id);
-	}
-
-	@GraphQLQuery(name = "policy")
-	public Optional<Policy> getPolicyById(@GraphQLArgument(name = "id") Long id) {
-		return policyRepository.findById(id);
-	}
-	
 	@GraphQLMutation(name = "saveUser")
 	public User saveUser(@GraphQLArgument(name = "user") User user) {
 		return userRepository.save(user);
 	}
 
 	@GraphQLMutation(name = "savePolicy")
-	public Policy savePolicy(@GraphQLArgument(name = "policy") Policy policy,
-			@GraphQLArgument(name="userId") Long userId) {
-		User user = this.userRepository.getOne(userId);
-		if (user != null) {
-			policy.setUser(user);
-			user.getPolicies().add(policy);
-		}
-		
+	public Policy savePolicy(@GraphQLArgument(name = "policy") Policy policy) {
 		return policyRepository.save(policy);
 	}
 	
@@ -134,27 +113,25 @@ public class InsuranceService {
 	public Policy savePolicy(@GraphQLArgument(name = "policy") Policy policy,
 			@GraphQLArgument(name="userName") String userName) {
 		List<User> users = this.userRepository.findAll();
-		User user = users.stream().filter(x -> x.getName().equalsIgnoreCase(userName)).findFirst().get();
-		if (user != null) {
-			policy.setUser(user);
-			user.getPolicies().add(policy);
-		}
+		policy.setUserId(
+			users.stream().filter(x -> x.getName().equalsIgnoreCase(userName)).findFirst().get().getId()
+		);
 		
 		return policyRepository.save(policy);
 	}
 	
 	@GraphQLMutation(name = "updateUser")
 	public User updateUser(@GraphQLArgument(name = "id") long id, @GraphQLArgument(name = "user") User user) {
-		Optional<User> userToUpdate = userRepository.findById(id);
-		userToUpdate.get().setName(user.getName());
-		return userRepository.save(userToUpdate.get());
+		User userToUpdate = userRepository.findById(id).get();
+		userToUpdate.setName(user.getName());
+		return userRepository.save(userToUpdate);
 	}
 
 	@GraphQLMutation(name = "updatePolicy")
 	public Policy updatePolicy(@GraphQLArgument(name = "id") long id, @GraphQLArgument(name = "policy") Policy policy) {
-		Optional<Policy> policyToUpdate = policyRepository.findById(id);
-		policyToUpdate.get().setName(policy.getName());
-		return policyRepository.save(policyToUpdate.get());
+		Policy policyToUpdate = policyRepository.findById(id).get();
+		policyToUpdate.setName(policy.getName());
+		return policyRepository.save(policyToUpdate);
 	}
 	
 	@GraphQLMutation(name = "deleteUser")
@@ -169,9 +146,47 @@ public class InsuranceService {
 	
 	@GraphQLMutation(name = "updateCountry")
     public User updateCountry(@GraphQLArgument(name = "user") User user, @GraphQLArgument(name = "countryId") String countryId) {
-		Optional<User> userToUpdate = userRepository.findById(user.getId());
-		userToUpdate.get().setCountryCodeId(countryId);
-		return userRepository.save(userToUpdate.get());
+		User userToUpdate = userRepository.findById(user.getId()).get();
+		userToUpdate.setCountryCodeId(countryId);
+		return userRepository.save(userToUpdate);
+	}
+
+	@GraphQLQuery(name = "users")
+	public List<User> getUsers() {
+		return userRepository.findAll();
+	}
+
+	@GraphQLQuery(name = "policies")
+	public List<Policy> getPolicies() {
+		return policyRepository.findAll();
+	}
+
+    @GraphQLQuery(name = "policyUser")
+    public User user(@GraphQLContext Policy policy) {
+        if (policy.getUserId() == null) {
+            return null;
+        }
+        return userRepository.findById(policy.getUserId()).orElseThrow();
+    }
+
+    @GraphQLQuery(name = "userPolicies")
+    public List<Policy> policy(@GraphQLContext User user) {
+        if (user.getId() == null) {
+            return null;
+		}
+		return policyRepository.findAll().stream().
+								filter(x -> x.getUserId().equals(user.getId())).
+								collect(Collectors.toList());
+    }
+
+	@GraphQLQuery(name = "user")
+	public Optional<User> getUserById(@GraphQLArgument(name = "id") Long id) {
+		return userRepository.findById(id);
+	}
+
+	@GraphQLQuery(name = "policy")
+	public Optional<Policy> getPolicyById(@GraphQLArgument(name = "id") Long id) {
+		return policyRepository.findById(id);
 	}
 	
 	@GraphQLQuery(name = "isMale") // Calculated property of User

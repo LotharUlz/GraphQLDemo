@@ -1,12 +1,13 @@
-package com.nttdata.graphqldemo;
+package com.nttdata.graphqldemo.controller;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
+
+import com.nttdata.graphqldemo.model.masterdata.*;
 
 @Service
 @GraphQLApi

@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+    demo:
+        build: .
+        image: graphqldemo:0.0.1
+        ports:
+            - 8081:8080
+        depends_on:
+            - partner_db
+            - policy_db
+        environment:
+            - SPRING_DATASOURCE_PARTNER_URL=jdbc:postgresql://partner_db:5432/partner
+            - SPRING_DATASOURCE_POLICY_URL=jdbc:postgresql://policy_db:5432/policy
+
+    partner_db:
+        image: postgres:12.2-alpine
+        ports:
+            - '5432:5432'
+        environment:
+            POSTGRES_DB: partner
+            POSTGRES_USER: dbUser
+            POSTGRES_PASSWORD: secretDbPassword
+        volumes:
+            - type: bind
+              source: ./etc/users.sql
+              target: /docker-entrypoint-initdb.d/init_db.sql
+              read_only: true
+    
+    policy_db:
+        image: postgres:12.2-alpine
+        ports:
+            - '5433:5432'
+        environment:
+            POSTGRES_DB: policy
+            POSTGRES_USER: dbUser
+            POSTGRES_PASSWORD: secretDbPassword
+        volumes:
+            - type: bind
+              source: ./etc/policies.sql
+              target: /docker-entrypoint-initdb.d/init_db.sql
+              read_only: true
+            
