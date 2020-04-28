@@ -1,4 +1,4 @@
-package com.nttdata.graphqldemo;
+package com.nttdata.graphqldemo.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +24,12 @@ import io.leangen.graphql.annotations.GraphQLContext;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
+
+import com.nttdata.graphqldemo.model.partner.*;
+import com.nttdata.graphqldemo.model.policy.*;
+import com.nttdata.graphqldemo.model.masterdata.*;
+import com.nttdata.graphqldemo.repository.partner.*;
+import com.nttdata.graphqldemo.repository.policy.*;
 
 @Service
 @GraphQLApi
@@ -122,10 +128,10 @@ public class InsuranceService {
 	public Policy savePolicy(@GraphQLArgument(name = "policy") Policy policy,
 			@GraphQLArgument(name="userId") Long userId) {
 		User user = this.userRepository.getOne(userId);
-		if (user != null) {
+		/*if (user != null) {
 			policy.setUser(user);
 			user.getPolicies().add(policy);
-		}
+		}*/
 		
 		return policyRepository.save(policy);
 	}
@@ -134,11 +140,11 @@ public class InsuranceService {
 	public Policy savePolicy(@GraphQLArgument(name = "policy") Policy policy,
 			@GraphQLArgument(name="userName") String userName) {
 		List<User> users = this.userRepository.findAll();
-		User user = users.stream().filter(x -> x.getName().equalsIgnoreCase(userName)).findFirst().get();
-		if (user != null) {
+		/*User user = users.stream().filter(x -> x.getName().equalsIgnoreCase(userName)).findFirst().get();
+		/*if (user != null) {
 			policy.setUser(user);
 			user.getPolicies().add(policy);
-		}
+		}*/
 		
 		return policyRepository.save(policy);
 	}

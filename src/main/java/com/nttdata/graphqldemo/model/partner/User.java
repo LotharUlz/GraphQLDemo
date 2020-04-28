@@ -1,11 +1,12 @@
-package com.nttdata.graphqldemo;
+package com.nttdata.graphqldemo.model.partner;
+
+import com.nttdata.graphqldemo.model.policy.Policy;
+
+import javax.persistence.*;
+import io.leangen.graphql.annotations.GraphQLQuery;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.*;
-
-import io.leangen.graphql.annotations.GraphQLQuery;
 
 @Entity
 @Table(name = "users")
@@ -18,9 +19,9 @@ public class User {
     @GraphQLQuery(name = "name", description = "A user's name")
     private String name;
     
-    @OneToMany
-    @GraphQLQuery(name = "policies", description = "A user's policies")
-    private List<Policy> policies = new ArrayList<Policy>();
+    //@OneToMany
+    //@GraphQLQuery(name = "policies", description = "A user's policies")
+    //private List<Policy> policies = new ArrayList<Policy>();
     
     private String countryCodeId;
     
@@ -40,13 +41,13 @@ public class User {
         this.name = name;
     }
 
-    public List<Policy> getPolicies() {
+    /*public List<Policy> getPolicies() {
     	return policies;
     }
     
     public void setPolicies(List<Policy> policies) {
     	this.policies = policies;
-    }
+    }*/
      
     @Override
     public String toString() {

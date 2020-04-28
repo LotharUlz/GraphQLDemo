@@ -1,4 +1,4 @@
-package com.nttdata.graphqldemo;
+package com.nttdata.graphqldemo.model.masterdata;
 
 import io.leangen.graphql.annotations.GraphQLQuery;
 

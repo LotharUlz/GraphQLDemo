@@ -1,7 +1,8 @@
-package com.nttdata.graphqldemo;
+package com.nttdata.graphqldemo.model.policy;
+
+import com.nttdata.graphqldemo.model.partner.User;
 
 import javax.persistence.*;
-
 import io.leangen.graphql.annotations.GraphQLQuery;
 
 @Entity
@@ -15,9 +16,11 @@ public class Policy {
     @GraphQLQuery(name = "name", description = "An policy's name")
     private String name;
 
-    @ManyToOne
-    @GraphQLQuery(name = "user", description = "An policy's user")
-    private User user;
+    //@ManyToOne
+    //@GraphQLQuery(name = "user", description = "An policy's user")
+    //private User user;
+    @GraphQLQuery(name = "userId", description = "An policy's name")
+    private long userId;
     
     public Long getId() {
         return id;
@@ -35,14 +38,22 @@ public class Policy {
         this.name = name;
     }
 
-    public User getUser() {
+    /*public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }*/
+
+    public Long getUser() {
+        return userId;
     }
-    
+
+    public void setUser(long user) {
+        this.userId = user;
+    }
+
     @Override
     public String toString() {
         return "User{" +
