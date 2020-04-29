@@ -101,12 +101,12 @@ public class InsuranceService {
 	
 	@GraphQLMutation(name = "saveUser")
 	public User saveUser(@GraphQLArgument(name = "user") User user) {
-		return userRepository.save(user);
+		return userRepository.saveAndFlush(user);
 	}
 
 	@GraphQLMutation(name = "savePolicy")
 	public Policy savePolicy(@GraphQLArgument(name = "policy") Policy policy) {
-		return policyRepository.save(policy);
+		return policyRepository.saveAndFlush(policy);
 	}
 	
 	@GraphQLMutation(name = "savePolicy")
