@@ -63,7 +63,7 @@ docker-compose down
 
 { user(id: 1) { id, name, isMale } }
 
-{ policy(id: 1) { id, name } }
+{ policy(id: 3) { id, name } }
 
 mutation {
   saveUser(user: { name: "Schreiner" }) {
@@ -73,7 +73,7 @@ mutation {
 }
 
 mutation {
-  updateCountry(user: {id: 3}, countryId: "AT") {
+  updateCountry(user: {id: 1}, countryId: "AT") {
     id
     isMale
     country {id, name}
