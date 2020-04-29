@@ -8,7 +8,7 @@ import io.leangen.graphql.annotations.GraphQLQuery;
 public class User {
 
     @Id 
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     @GraphQLQuery(name = "id", description = "A user's id")
     private Long id;
