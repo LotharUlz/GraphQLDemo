@@ -7,14 +7,18 @@ import io.leangen.graphql.annotations.GraphQLQuery;
 @Table(name = "policies", schema = "policy")
 public class Policy {
 
-    @Id @GeneratedValue
+    @Id 
+    @GeneratedValue
+    @Column(name="id")
     @GraphQLQuery(name = "id", description = "An policy's id")
     private Long id;
 
     @GraphQLQuery(name = "name", description = "An policy's name")
+    @Column(name="name")
     private String name;
 
     @GraphQLQuery(name = "userId", description = "An policy's name")
+    @Column(name="userId")
     private long userId;
     
     public Long getId() {
