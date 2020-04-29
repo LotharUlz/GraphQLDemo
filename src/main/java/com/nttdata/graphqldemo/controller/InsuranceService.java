@@ -135,13 +135,15 @@ public class InsuranceService {
 	}
 	
 	@GraphQLMutation(name = "deleteUser")
-	public void deleteUser(@GraphQLArgument(name = "id") Long id) {
+	public String deleteUser(@GraphQLArgument(name = "id") Long id) {
 		userRepository.deleteById(id);
+		return "User has been deleted, id: " + id;
 	}
 
 	@GraphQLMutation(name = "deletePolicy")
-	public void deletePolicy(@GraphQLArgument(name = "id") Long id) {
+	public String deletePolicy(@GraphQLArgument(name = "id") Long id) {
 		policyRepository.deleteById(id);
+		return "Policy has been deleted, id: " + id;
 	}
 	
 	@GraphQLMutation(name = "updateCountry")
